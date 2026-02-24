@@ -1,0 +1,42 @@
+---
+import PagesLayout from '../layouts/PagesLayout.astro';
+import MidwifeCard from '../components/MidwifeCard.astro';
+import { getMidwives } from '../lib/midwives';
+
+const midwives = await getMidwives();
+const midwivesWithPhoto = midwives.filter(
+  (m) =>
+    m.photo_url &&
+    !m.photo_url.toLowerCase().includes('hebamme_placeholder.jpg')
+);
+---
+
+<PagesLayout
+  title="Toutes les sages-femmes — Pages"
+  description="Découvrez l'ensemble des sages-femmes indépendantes référencées sur Pages en Suisse romande."
+>
+  <section class="section" id="sages-femmes">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <div class="section-kicker">Annuaire complet</div>
+        <h1 class="section-title">Voir les {midwives.length} sages-femmes</h1>
+        <p class="section-summary">
+          Parcourez l'ensemble des profils de sages-femmes indépendantes
+          référencées sur Pages. Utilisez le questionnaire pour recevoir une
+          sélection sur mesure.
+        </p>
+      </header>
+      <div style="margin-bottom: 1.8rem;" class="fade-in-up">
+        <a href="/questionnaire" class="btn btn-outline">
+          Répondre au questionnaire
+        </a>
+      </div>
+      <div class="cards-grid">
+        {midwivesWithPhoto.map((midwife) => (
+          <MidwifeCard midwife={midwife} />
+        ))}
+      </div>
+    </div>
+  </section>
+</PagesLayout>
+

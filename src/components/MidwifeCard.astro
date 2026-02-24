@@ -1,0 +1,82 @@
+---
+import type { Midwife } from '../lib/midwives';
+import { getMidwifeSlug } from '../lib/midwives';
+
+interface Props {
+  midwife: Midwife;
+}
+
+const { midwife } = Astro.props;
+
+const slug = getMidwifeSlug(midwife);
+
+const availability = (midwife.disponibilite || '').toLowerCase();
+
+let availabilityLabel = midwife.disponibilite || 'Sur rendez-vous';
+let availabilityTone: 'available' | 'soon' | 'default' = 'default';
+
+if (availability.includes('très disponible') || availability.includes('tres disponible')) {
+  availabilityTone = 'available';
+  availabilityLabel = 'Disponible rapidement';
+} else if (availability.includes('disponible rapidement')) {
+  availabilityTone = 'available';
+} else if (availability.includes('sur rendez-vous')) {
+  availabilityTone = 'soon';
+}
+
+const specialties = (midwife.specialites || '')
+  .split(';')
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .slice(0, 3);
+---
+
+<article class="card midwife-card fade-in-up">
+  <div class="midwife-card-header">
+    <div class="midwife-avatar">
+      {midwife.photo_url ? (
+        <img
+          src={midwife.photo_url}
+          alt={`Photo de ${midwife.nom}`}
+          loading="lazy"
+          onerror="this.onerror=null; this.src='https://images.pexels.com/photos/3845761/pexels-photo-3845761.jpeg?auto=compress&cs=tinysrgb&w=400';"
+        />
+      ) : (
+        <div class="midwife-avatar-placeholder"></div>
+      )}
+    </div>
+    <div>
+      <h3 class="midwife-name">
+        <a href={`/sage-femme/${slug}`}>{midwife.nom}</a>
+      </h3>
+      <p class="midwife-location">
+        {midwife.ville}
+        {midwife.npa && <> · {midwife.npa}</>}
+      </p>
+      {midwife.lieu_travail && (
+        <p class="midwife-workplace">{midwife.lieu_travail}</p>
+      )}
+    </div>
+  </div>
+  <div class="midwife-meta">
+    <span class:list={['badge', 'badge-availability', `badge-${availabilityTone}`]}>
+      {availabilityLabel}
+    </span>
+  </div>
+  {specialties.length > 0 && (
+    <ul class="midwife-specialties">
+      {specialties.map((s) => (
+        <li>{s}</li>
+      ))}
+    </ul>
+  )}
+  <div class="midwife-actions">
+    <a class="btn btn-primary" href={`/sage-femme/${slug}`}>
+      Contacter
+    </a>
+    <a class="btn btn-ghost" href={`/sage-femme/${slug}`}>
+      Voir le profil
+    </a>
+  </div>
+</article>
+

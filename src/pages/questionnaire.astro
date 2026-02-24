@@ -1,0 +1,584 @@
+---
+import PagesLayout from '../layouts/PagesLayout.astro';
+---
+
+<PagesLayout
+  title="Questionnaire — Trouvez votre sage-femme | Pages"
+  description="Répondez à quelques questions pour recevoir une liste personnalisée de sages-femmes disponibles près de chez vous."
+>
+  <div class="questionnaire-root">
+    <div class="container">
+      <header class="questionnaire-header">
+        <h1 class="questionnaire-title">
+          Accédez aux coordonnées, disponibilités et spécialités — gratuitement
+        </h1>
+        <p class="questionnaire-subtitle">
+          Dites-nous pour qui et pour quel type de suivi vous cherchez, nous
+          préparons une liste sur mesure de sages-femmes disponibles.
+        </p>
+      </header>
+
+      <div class="questionnaire-card">
+        <div class="questionnaire-progress">
+          <div
+            class="questionnaire-progress-bar"
+            data-questionnaire-progress
+          ></div>
+        </div>
+
+        <div
+          class="questionnaire-step is-active"
+          data-step="1"
+        >
+          <div class="questionnaire-step-label">Étape 1 sur 5</div>
+          <div class="questionnaire-question">
+            Pour qui cherchez-vous une sage-femme&nbsp;?
+          </div>
+          <div class="questionnaire-options" data-options>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Pour moi"
+            >
+              Pour moi
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Ma fille"
+            >
+              Ma fille
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Ma sœur"
+            >
+              Ma sœur
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Une amie"
+            >
+              Une amie
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Autre"
+            >
+              Autre
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="questionnaire-step"
+          data-step="2"
+        >
+          <div class="questionnaire-step-label">Étape 2 sur 5</div>
+          <div class="questionnaire-question">
+            Quel suivi cherchez-vous&nbsp;?
+          </div>
+          <div class="questionnaire-options" data-options>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Suivi grossesse"
+            >
+              Suivi grossesse
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Accouchement domicile"
+            >
+              Accouchement domicile
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Postnatal"
+            >
+              Postnatal
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Préparation naissance"
+            >
+              Préparation naissance
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Allaitement"
+            >
+              Allaitement
+            </button>
+          </div>
+          <div class="questionnaire-nav">
+            <div class="questionnaire-nav-left">
+              <button
+                class="btn btn-ghost"
+                type="button"
+                data-prev
+              >
+                Retour
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="questionnaire-step"
+          data-step="3"
+        >
+          <div class="questionnaire-step-label">Étape 3 sur 5</div>
+          <div class="questionnaire-question">
+            Quand est le terme ou la période concernée&nbsp;?
+          </div>
+          <div class="questionnaire-options" data-options>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Moins d'1 mois"
+            >
+              Moins d'1 mois
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="1-3 mois"
+            >
+              1-3 mois
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="3-6 mois"
+            >
+              3-6 mois
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Plus de 6 mois"
+            >
+              Plus de 6 mois
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Déjà accouchée"
+            >
+              Déjà accouchée
+            </button>
+          </div>
+          <div class="questionnaire-nav">
+            <div class="questionnaire-nav-left">
+              <button
+                class="btn btn-ghost"
+                type="button"
+                data-prev
+              >
+                Retour
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="questionnaire-step"
+          data-step="4"
+        >
+          <div class="questionnaire-step-label">Étape 4 sur 5</div>
+          <div class="questionnaire-question">
+            Dans quelle ville ou NPA cherchez-vous une sage-femme&nbsp;?
+          </div>
+          <div class="field-group" style="margin-top: 0.6rem;">
+            <input
+              class="field-input"
+              type="text"
+              name="lieu"
+              placeholder="Par ex. 1007 Lausanne ou 1260 Nyon"
+              data-free-input
+            />
+          </div>
+          <div class="questionnaire-nav" style="margin-top: 1.3rem;">
+            <div class="questionnaire-nav-left">
+              <button
+                class="btn btn-ghost"
+                type="button"
+                data-prev
+              >
+                Retour
+              </button>
+            </div>
+            <div class="questionnaire-nav-right">
+              <button
+                class="btn btn-primary"
+                type="button"
+                data-next
+              >
+                Continuer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="questionnaire-step"
+          data-step="5"
+        >
+          <div class="questionnaire-step-label">Étape 5 sur 5</div>
+          <div class="questionnaire-question">
+            Dans quelle(s) langue(s) souhaitez-vous être accompagnée&nbsp;?
+          </div>
+          <div class="questionnaire-options" data-options>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Français"
+            >
+              Français
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Allemand"
+            >
+              Allemand
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Anglais"
+            >
+              Anglais
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Italien"
+            >
+              Italien
+            </button>
+            <button
+              class="pill-button"
+              type="button"
+              data-value="Peu importe"
+            >
+              Peu importe
+            </button>
+          </div>
+          <div class="questionnaire-nav">
+            <div class="questionnaire-nav-left">
+              <button
+                class="btn btn-ghost"
+                type="button"
+                data-prev
+              >
+                Retour
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="questionnaire-step"
+          data-step="6"
+        >
+          <div class="questionnaire-step-label">Analyse de vos réponses</div>
+          <div class="questionnaire-question" data-loading-message>
+            Analyse de vos réponses...
+          </div>
+          <div class="questionnaire-progress" style="margin-top: 0.9rem;">
+            <div
+              class="questionnaire-progress-bar"
+              data-loading-progress
+            ></div>
+          </div>
+          <div class="questionnaire-loading-images">
+            <img
+              src="https://images.pexels.com/photos/3845761/pexels-photo-3845761.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              src="https://images.pexels.com/photos/3845126/pexels-photo-3845126.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              src="https://images.pexels.com/photos/3997348/pexels-photo-3997348.jpeg?auto=compress&cs=tinysrgb&w=400"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div
+          class="questionnaire-step"
+          data-step="7"
+        >
+          <div class="questionnaire-step-label">Dernière étape</div>
+          <div class="questionnaire-question">
+            Vous êtes sur la bonne voie&nbsp;!
+          </div>
+          <p class="section-summary" style="margin-bottom: 1rem;">
+            Nous avons sélectionné les sages-femmes disponibles près de chez
+            vous. Complétez ce formulaire pour recevoir vos résultats.
+          </p>
+          <form
+            action="https://formspree.io/f/xlgwanan"
+            method="POST"
+            data-formspree-form
+          >
+            <input type="hidden" name="_subject" value="Nouveau contact Pages - Sage-femme" />
+            <input type="hidden" name="pour_qui" data-answer-field="1" />
+            <input type="hidden" name="type_suivi" data-answer-field="2" />
+            <input type="hidden" name="terme" data-answer-field="3" />
+            <input type="hidden" name="lieu" data-answer-field="4" />
+            <input type="hidden" name="langue" data-answer-field="5" />
+            <div class="field-group">
+              <label class="field-label" for="q-first-name">
+                Prénom
+              </label>
+              <input
+                class="field-input"
+                id="q-first-name"
+                name="prenom"
+                autocomplete="given-name"
+                required
+              />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="q-last-name">
+                Nom
+              </label>
+              <input
+                class="field-input"
+                id="q-last-name"
+                name="nom"
+                autocomplete="family-name"
+                required
+              />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="q-email">
+                Email
+              </label>
+              <input
+                class="field-input"
+                id="q-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="q-phone">
+                Téléphone
+              </label>
+              <input
+                class="field-input"
+                id="q-phone"
+                name="telephone"
+                autocomplete="tel"
+              />
+            </div>
+            <div class="questionnaire-nav" style="margin-top: 0.8rem;">
+              <div class="questionnaire-nav-left">
+                <button
+                  class="btn btn-ghost"
+                  type="button"
+                  data-prev
+                >
+                  Retour
+                </button>
+              </div>
+              <div class="questionnaire-nav-right">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  data-submit-button
+                >
+                  Voir mes résultats
+                </button>
+              </div>
+            </div>
+            <p class="legal-text">
+              En envoyant ce formulaire, vous acceptez que vos données soient
+              traitées conformément au RGPD dans le seul but de vous mettre en
+              relation avec des sages-femmes indépendantes. Vous pouvez
+              demander la suppression de vos informations à tout moment.
+            </p>
+            <div class="form-success" data-success-message>
+              Merci ! Vous recevrez vos recommandations sous 24h.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const steps = Array.from(
+      document.querySelectorAll('.questionnaire-step')
+    );
+    const totalSteps = 5;
+    const progressBar = document.querySelector(
+      '[data-questionnaire-progress]'
+    );
+    const loadingMessage = document.querySelector('[data-loading-message]');
+    const loadingProgress = document.querySelector('[data-loading-progress]');
+    let currentStep = 1;
+    let loadingRaf = 0;
+    let loadingTimeout = 0;
+
+    function updateProgress() {
+      if (!progressBar) return;
+      const percent = Math.min(
+        100,
+        Math.max(0, (currentStep / totalSteps) * 100)
+      );
+      progressBar.style.width = `${percent}%`;
+    }
+
+    function showStep(step) {
+      if (loadingRaf) cancelAnimationFrame(loadingRaf);
+      if (loadingTimeout) clearTimeout(loadingTimeout);
+
+      steps.forEach((el) => {
+        const value = Number(el.getAttribute('data-step'));
+        el.classList.toggle('is-active', value === step);
+      });
+      currentStep = step;
+      updateProgress();
+
+      if (step === 6) {
+        startLoadingSequence();
+      }
+    }
+
+    function startLoadingSequence() {
+      const totalMs = 5000;
+      const start = performance.now();
+
+      function messageFor(elapsed) {
+        if (elapsed < 1000) return 'Analyse de vos réponses...';
+        if (elapsed < 2000)
+          return 'Recherche des sages-femmes disponibles près de chez vous...';
+        if (elapsed < 3000) return 'Vérification des disponibilités...';
+        if (elapsed < 4000) return 'Préparation de votre liste personnalisée...';
+        if (elapsed < 5000) return 'Votre liste est prête !';
+        return 'Votre liste est prête !';
+      }
+
+      function tick(now) {
+        const elapsed = Math.max(0, now - start);
+        const t = Math.min(1, elapsed / totalMs);
+
+        if (loadingProgress) {
+          loadingProgress.style.width = `${t * 100}%`;
+        }
+        if (loadingMessage) {
+          loadingMessage.textContent = messageFor(elapsed);
+        }
+
+        if (t < 1) {
+          loadingRaf = requestAnimationFrame(tick);
+        } else {
+          loadingTimeout = window.setTimeout(() => showStep(7), 250);
+        }
+      }
+
+      if (loadingProgress) loadingProgress.style.width = '0%';
+      if (loadingMessage) loadingMessage.textContent = 'Analyse de vos réponses...';
+      loadingRaf = requestAnimationFrame(tick);
+    }
+
+    function getActiveStepElement() {
+      return steps.find((el) => el.classList.contains('is-active'));
+    }
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      if (target.matches('.pill-button')) {
+        const optionsContainer = target.closest('[data-options]');
+        if (optionsContainer) {
+          optionsContainer
+            .querySelectorAll('.pill-button')
+            .forEach((btn) => btn.classList.remove('is-selected'));
+        }
+        target.classList.add('is-selected');
+
+        const current = target.closest('.questionnaire-step');
+        const stepIndex = current ? Number(current.getAttribute('data-step')) : 0;
+        if (stepIndex === 1 || stepIndex === 2 || stepIndex === 3 || stepIndex === 5) {
+          showStep(stepIndex + 1);
+        }
+      }
+
+      if (target.matches('[data-next]')) {
+        const current = getActiveStepElement();
+        if (!current) return;
+        const stepIndex = Number(current.getAttribute('data-step'));
+
+        if (stepIndex !== 4) return;
+        const freeInput = current.querySelector('[data-free-input]');
+        if (freeInput instanceof HTMLInputElement && !freeInput.value) return;
+        showStep(5);
+      }
+
+      if (target.matches('[data-prev]')) {
+        const current = getActiveStepElement();
+        if (!current) return;
+        const stepIndex = Number(current.getAttribute('data-step'));
+        if (stepIndex > 1) {
+          showStep(stepIndex - 1);
+        }
+      }
+    });
+
+    function syncAnswersToFinalForm() {
+      const answerFields = document.querySelectorAll('[data-answer-field]');
+      answerFields.forEach((field) => {
+        if (!(field instanceof HTMLInputElement)) return;
+        const index = Number(field.getAttribute('data-answer-field'));
+        const stepEl = document.querySelector(
+          `.questionnaire-step[data-step="${index}"]`
+        );
+        if (!stepEl) return;
+        const options = stepEl.querySelector('[data-options]');
+        const freeInput = stepEl.querySelector('[data-free-input]');
+        let value = '';
+        if (options) {
+          const selected = options.querySelector('.pill-button.is-selected');
+          if (selected) {
+            value = selected.getAttribute('data-value') || '';
+          }
+        }
+        if (!value && freeInput instanceof HTMLInputElement) {
+          value = freeInput.value;
+        }
+        field.value = value;
+      });
+    }
+
+    const finalForm = document.querySelector(
+      '.questionnaire-step[data-step="7"] form'
+    );
+    finalForm?.addEventListener('submit', () => {
+      syncAnswersToFinalForm();
+    });
+
+    updateProgress();
+  </script>
+</PagesLayout>
+

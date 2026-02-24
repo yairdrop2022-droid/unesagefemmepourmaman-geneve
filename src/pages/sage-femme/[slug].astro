@@ -1,0 +1,190 @@
+---
+import PagesLayout from '../../layouts/PagesLayout.astro';
+import type { Midwife } from '../../lib/midwives';
+import { getMidwives, getMidwifeSlug } from '../../lib/midwives';
+
+export async function getStaticPaths() {
+  const midwives = await getMidwives();
+
+  return midwives.map((midwife) => ({
+    params: { slug: getMidwifeSlug(midwife) },
+    props: { midwife },
+  }));
+}
+
+interface Props {
+  midwife: Midwife;
+}
+
+const { midwife } = Astro.props;
+
+const availability = (midwife.disponibilite || '').toLowerCase();
+
+let availabilityLabel = midwife.disponibilite || 'Sur rendez-vous';
+let availabilityTone: 'available' | 'soon' | 'default' = 'default';
+
+if (availability.includes('très disponible') || availability.includes('tres disponible')) {
+  availabilityTone = 'available';
+  availabilityLabel = 'Disponible rapidement';
+} else if (availability.includes('disponible rapidement')) {
+  availabilityTone = 'available';
+} else if (availability.includes('sur rendez-vous')) {
+  availabilityTone = 'soon';
+}
+
+const specialties = (midwife.specialites || '')
+  .split(';')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const languages = (midwife.langues || '')
+  .split(';')
+  .map((l) => l.trim())
+  .filter(Boolean);
+
+const title = `${midwife.nom} — Sage-femme à ${midwife.ville} | Pages`;
+---
+
+<PagesLayout {title}>
+  <div class="detail-hero">
+    <div class="container detail-layout">
+      <section class="detail-main fade-in-up">
+        <header>
+          <h1>{midwife.nom}</h1>
+          <p class="detail-location">
+            Sage-femme indépendante · {midwife.ville}
+            {midwife.npa && <> · {midwife.npa}</>}
+          </p>
+          {midwife.lieu_travail && (
+            <p class="midwife-workplace">{midwife.lieu_travail}</p>
+          )}
+          <div class="detail-section">
+            <span
+              class:list={['badge', 'badge-availability', `badge-${availabilityTone}`]}
+            >
+              {availabilityLabel}
+            </span>
+          </div>
+          <div class="detail-section">
+            <a class="btn btn-outline" href="#contact-form">
+              Voir le profil complet et les coordonnées →
+            </a>
+          </div>
+        </header>
+
+        {specialties.length > 0 && (
+          <section class="detail-section">
+            <h2>Spécialités</h2>
+            <ul class="midwife-specialties">
+              {specialties.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {languages.length > 0 && (
+          <section class="detail-section">
+            <h2>Langues parlées</h2>
+            <div class="pill-list">
+              {languages.map((lang) => (
+                <span class="pill">{lang}</span>
+              ))}
+            </div>
+          </section>
+        )}
+      </section>
+
+      <aside class="contact-panel fade-in-up">
+        <header>
+          <h2>Contacter cette sage-femme</h2>
+          <p class="section-summary">
+            Remplissez ce formulaire pour être mis·e en relation. Votre demande
+            sera transmise directement à la sage-femme.
+          </p>
+        </header>
+        <form
+          id="contact-form"
+          action="https://formspree.io/f/xlgwanan"
+          method="POST"
+          data-formspree-form
+          data-reveal-target-id="contact-confirmation"
+          data-success-auto-hide="false"
+          data-disable-reset="true"
+          data-disable-success-toast="true"
+          class="fade-in-up"
+          aria-label="Formulaire de contact"
+        >
+          <input type="hidden" name="_subject" value="Nouveau contact Pages - Sage-femme" />
+          <input type="hidden" name="sage_femme" value={midwife.nom} />
+          <div class="field-group">
+            <label class="field-label" for="detail-prenom">
+              Prénom
+            </label>
+            <input
+              class="field-input"
+              id="detail-prenom"
+              name="prenom"
+              autocomplete="given-name"
+              required
+            />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="detail-email">
+              Email
+            </label>
+            <input
+              class="field-input"
+              id="detail-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="detail-terme">
+              Terme de grossesse (approx.)
+            </label>
+            <input
+              class="field-input"
+              id="detail-terme"
+              name="terme"
+              placeholder="Par ex. 28 semaines, DPA 12.10.2026…"
+            />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="detail-message">
+              Message
+            </label>
+            <textarea
+              class="field-textarea"
+              id="detail-message"
+              name="message"
+              placeholder="Expliquez brièvement votre situation et vos besoins."
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              data-submit-button
+            >
+              Envoyer
+            </button>
+          </div>
+        </form>
+        <div class="contact-reveal">
+          <div class="contact-details" id="contact-confirmation">
+            <p>
+              <strong>Votre demande a été transmise à {midwife.nom}.</strong>{' '}
+              Elle vous contactera directement sous 24-48h. Vous recevrez
+              également une confirmation par email.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</PagesLayout>
+

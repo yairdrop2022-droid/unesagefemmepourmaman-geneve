@@ -1,0 +1,170 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Pages — Trouvez votre sage-femme en Suisse romande',
+  description = "L'annuaire des sages-femmes indépendantes reconnues LaMal en Suisse romande.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <slot name="head" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">Pages</div>
+        <div class="header-tagline">
+          Trouvez votre sage-femme en Suisse romande
+        </div>
+        <a href="#sages-femmes" class="btn btn-primary header-cta">
+          Voir les sages-femmes
+        </a>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        Pages — Trouvez votre sage-femme en Suisse romande
+      </div>
+    </footer>
+
+    <script type="module">
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        {
+          threshold: 0.15,
+        }
+      );
+
+      document
+        .querySelectorAll('.fade-in-up')
+        .forEach((el) => observer.observe(el));
+
+      const modal = document.querySelector('[data-contact-modal]');
+      const overlay = modal?.querySelector('[data-modal-overlay]');
+      const closeBtn = modal?.querySelector('[data-modal-close]');
+      const form = modal?.querySelector('form');
+
+      function openModal(name) {
+        if (!modal) return;
+        const nameSpan = modal.querySelector('[data-modal-name]');
+        if (nameSpan) nameSpan.textContent = name || '';
+        const midwifeInput = modal.querySelector(
+          '[data-modal-midwife-input]'
+        );
+        if (midwifeInput instanceof HTMLInputElement) {
+          midwifeInput.value = name || '';
+        }
+        modal.classList.add('is-open');
+        document.body.classList.add('no-scroll');
+      }
+
+      function closeModal() {
+        if (!modal) return;
+        modal.classList.remove('is-open');
+        document.body.classList.remove('no-scroll');
+      }
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (target.matches('[data-contact-button]')) {
+          event.preventDefault();
+          const name = target.getAttribute('data-name') || '';
+          openModal(name);
+        }
+      });
+
+      overlay?.addEventListener('click', closeModal);
+      closeBtn?.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeModal();
+      });
+
+      async function handleFormSubmit(event) {
+        const target = event.target;
+        if (!(target instanceof HTMLFormElement)) return;
+        if (!target.matches('[data-formspree-form]')) return;
+        event.preventDefault();
+
+        const submitButton = target.querySelector('[data-submit-button]');
+        const successEl = target.querySelector('[data-success-message]');
+        const revealId = target.getAttribute('data-reveal-target-id');
+
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.disabled = true;
+        }
+
+        try {
+          await fetch(target.action, {
+            method: target.method || 'POST',
+            headers: { Accept: 'application/json' },
+            body: new FormData(target),
+          });
+
+          if (successEl) {
+            successEl.classList.add('is-visible');
+          }
+
+          if (revealId) {
+            const details = document.getElementById(revealId);
+            if (details) details.classList.add('is-visible');
+          }
+
+          target.reset();
+
+          if (target.closest('[data-contact-modal]')) {
+            setTimeout(() => {
+              if (successEl) successEl.classList.remove('is-visible');
+              closeModal();
+            }, 1800);
+          }
+        } catch (error) {
+          console.error('Form submission failed', error);
+        } finally {
+          if (submitButton instanceof HTMLButtonElement) {
+            submitButton.disabled = false;
+          }
+        }
+      }
+
+      document.addEventListener('submit', handleFormSubmit);
+
+      const callbackToggle = document.querySelector('[data-callback-toggle]');
+      const callbackPanel = document.querySelector('[data-callback-panel]');
+
+      callbackToggle?.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (!callbackPanel) return;
+        callbackPanel.classList.toggle('is-open');
+      });
+    </script>
+  </body>
+</html>
+

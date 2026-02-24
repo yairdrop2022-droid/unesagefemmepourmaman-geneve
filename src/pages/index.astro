@@ -1,17 +1,643 @@
 ---
+import PagesLayout from '../layouts/PagesLayout.astro';
+import MidwifeCard from '../components/MidwifeCard.astro';
+import { getMidwives, getTopCities } from '../lib/midwives';
 
+const midwives = await getMidwives();
+const midwivesWithPhoto = midwives.filter(
+  (m) =>
+    m.photo_url &&
+    !m.photo_url.toLowerCase().includes('hebamme_placeholder.jpg')
+);
+const carouselMidwives = midwivesWithPhoto.slice(0, 10);
+const featuredMidwives = midwivesWithPhoto.slice(0, 24);
+const topCities = getTopCities(midwives, [
+  'Lausanne',
+  'Vevey',
+  'Nyon',
+  'Morges',
+  'Yverdon-les-Bains',
+  'Aigle',
+]);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<PagesLayout>
+  <div class="hero">
+    <div class="container hero-layout">
+      <section class="fade-in-up">
+        <div class="hero-eyebrow">Pages</div>
+        <h1 class="hero-title">
+          Trouvez votre sage-femme en Suisse romande
+        </h1>
+        <p class="hero-subtitle">
+          L'annuaire des sages-femmes indépendantes reconnues LaMal. Une
+          sélection de professionnelles de confiance pour vous accompagner,
+          avant et après la naissance.
+        </p>
+
+        <form
+          class="search-bar"
+          aria-label="Rechercher par NPA ou ville"
+          method="get"
+          action="/questionnaire"
+        >
+          <input
+            class="search-input"
+            type="text"
+            name="q"
+            placeholder="Entrez votre NPA ou votre ville"
+          />
+          <button class="btn btn-primary" type="submit">
+            Search
+          </button>
+        </form>
+
+        <div class="hero-meta">
+          <span>238 sages-femmes indépendantes</span>
+          <span>6 cantons de Suisse romande</span>
+          <span>100% prises en charge LaMal</span>
+        </div>
+      </section>
+
+      <aside class="hero-panel fade-in-up">
+        <div class="hero-panel-title">Votre recherche, en douceur</div>
+        <div class="hero-panel-body">
+          Racontez-nous votre situation et nous vous aidons à trouver la
+          sage-femme qui vous correspond, à proximité de chez vous.
+        </div>
+        <div class="hero-panel-grid">
+          <div>
+            <div class="section-kicker">Accompagnement</div>
+            <p class="section-summary">
+              Suivi de grossesse, naissance, post-partum, allaitement et
+              soutien émotionnel.
+            </p>
+          </div>
+          <div>
+            <div class="section-kicker">Réseau romand</div>
+            <p class="section-summary">
+              Des sages-femmes expérimentées dans les principaux cantons
+              romands.
+            </p>
+          </div>
+        </div>
+        <div class="hero-panel-actions">
+          <a href="/questionnaire" class="btn btn-primary">
+            Trouver en ligne
+          </a>
+          <button
+            class="btn btn-primary"
+            type="button"
+            data-callback-toggle
+          >
+            Être rappelée
+          </button>
+          <a href="/questionnaire" class="btn btn-outline">
+            Je me renseigne
+          </a>
+        </div>
+        <div class="hero-callback" data-callback-panel>
+          <p class="hero-callback-note">
+            Laissez vos coordonnées, une sage-femme partenaire vous rappelle
+            dès que possible.
+          </p>
+          <form
+            action="https://formspree.io/f/xlgwanan"
+            method="POST"
+            data-formspree-form
+          >
+            <input type="hidden" name="_subject" value="Nouveau contact Pages - Sage-femme" />
+            <div class="field-group">
+              <label class="field-label" for="callback-prenom">
+                Prénom
+              </label>
+              <input
+                class="field-input"
+                id="callback-prenom"
+                name="prenom"
+                required
+              />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="callback-telephone">
+                Téléphone
+              </label>
+              <input
+                class="field-input"
+                id="callback-telephone"
+                name="telephone"
+                required
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                data-submit-button
+              >
+                Envoyer
+              </button>
+            </div>
+            <div class="form-success" data-success-message>
+              Merci ! Vous recevrez vos recommandations sous 24h.
+            </div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <section class="metric-strip">
+    <div class="container metric-grid">
+      <div class="metric fade-in-up">
+        <div class="metric-value">238</div>
+        <div class="metric-label">sages-femmes référencées</div>
+      </div>
+      <div class="metric fade-in-up">
+        <div class="metric-value">6</div>
+        <div class="metric-label">cantons de Suisse romande</div>
+      </div>
+      <div class="metric fade-in-up">
+        <div class="metric-value">100%</div>
+        <div class="metric-label">prestations prises en charge LaMal</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="metric-panels">
+    <div class="container metric-panels-grid">
+      <div class="panel fade-in-up">
+        <h2 class="panel-title">Un réseau de sages-femmes près de chez vous</h2>
+        <p class="panel-body">
+          Des professionnelles indépendantes, reconnues LaMal, disponibles dans
+          les principaux cantons de Suisse romande.
+        </p>
+        <div class="panel-metrics">
+          <div>
+            <div class="panel-metric-value">238</div>
+            <div class="panel-metric-label">sages-femmes</div>
+          </div>
+          <div>
+            <div class="panel-metric-value">6</div>
+            <div class="panel-metric-label">cantons couverts</div>
+          </div>
+          <div>
+            <div class="panel-metric-value">100%</div>
+            <div class="panel-metric-label">LaMal</div>
+          </div>
+        </div>
+        <form
+          class="search-bar"
+          method="get"
+          action="/questionnaire"
+          aria-label="Rechercher une sage-femme"
+        >
+          <input
+            class="search-input"
+            type="text"
+            name="ville"
+            placeholder="Ville ou NPA"
+          />
+          <button class="btn btn-primary" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
+      <div class="panel panel-alt fade-in-up">
+        <h2 class="panel-title">Mieux informée pour mieux choisir</h2>
+        <p class="panel-body">
+          Accédez aux disponibilités, spécialités et coordonnées des
+          sages-femmes en quelques questions seulement.
+        </p>
+        <div class="panel-links">
+          <a href="/questionnaire" class="panel-link">
+            Parler à une sage-femme près de moi
+            <span class="panel-link-arrow">→</span>
+          </a>
+          <a href="/questionnaire" class="panel-link">
+            Recevoir des recommandations personnalisées
+            <span class="panel-link-arrow">→</span>
+          </a>
+          <a href="/questionnaire" class="panel-link">
+            Comment fonctionne notre service
+            <span class="panel-link-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <div class="section-kicker">Comment ça marche</div>
+        <h2 class="section-title">Trouvez la bonne sage-femme en 3 étapes</h2>
+        <p class="section-summary">
+          Un parcours simple, guidé, pensé pour les futures et jeunes
+          parents qui veulent gagner du temps et être rassurés.
+        </p>
+      </header>
+      <div class="how-grid">
+        <article class="step-card fade-in-up">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Décrivez votre situation</h3>
+          <p class="step-text">
+            Quelques questions sur votre terme, votre lieu de vie et vos
+            besoins spécifiques (grossesse à risque, allaitement, domicile,
+            etc.).
+          </p>
+        </article>
+        <article class="step-card fade-in-up">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Recevez une liste personnalisée</h3>
+          <p class="step-text">
+            Nous croisons vos réponses avec notre annuaire vérifié de
+            sages-femmes indépendantes reconnues LaMal.
+          </p>
+        </article>
+        <article class="step-card fade-in-up">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Choisissez en confiance</h3>
+          <p class="step-text">
+            Contactez une ou plusieurs sages-femmes et organisez un premier
+            échange pour voir si le lien se crée.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="banner">
+    <div class="container banner-inner">
+      <div class="banner-text">
+        <div class="banner-title">
+          Notre service est entièrement gratuit
+        </div>
+        <div class="banner-subtitle">
+          Notre annuaire vérifié vous aide à trouver la sage-femme idéale près
+          de chez vous, sans frais pour vous.
+        </div>
+      </div>
+      <div class="banner-actions">
+        <a href="/questionnaire" class="btn btn-primary">
+          Commencer ma recherche
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section urgency-section">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <div class="section-kicker">Besoin rapide</div>
+        <h2 class="section-title">
+          Vous avez besoin d'une sage-femme rapidement ?
+        </h2>
+        <p class="section-summary">
+          Expliquez-nous votre situation, nous priorisons les demandes les plus
+          urgentes.
+        </p>
+      </header>
+      <ul class="urgency-list fade-in-up">
+        <li>Terme proche et pas encore de sage-femme</li>
+        <li>Sortie de maternité et besoin de suivi postnatal</li>
+      </ul>
+      <div class="banner-actions fade-in-up" style="margin-top: 1.4rem;">
+        <a href="/questionnaire" class="btn btn-primary">
+          Parler à une sage-femme maintenant
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="carousel-section">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <h2 class="section-title">Trouvez votre sage-femme</h2>
+        <p class="section-summary">
+          Quelques sages-femmes indépendantes en Suisse romande, prêtes à vous
+          accompagner.
+        </p>
+      </header>
+      <div class="carousel-inner fade-in-up" data-midwife-carousel>
+        <div class="carousel-frame">
+          {carouselMidwives.map((midwife, index) => {
+            const availability = (midwife.disponibilite || '').toLowerCase();
+
+            let availabilityLabel = midwife.disponibilite || 'Sur rendez-vous';
+            let availabilityTone: 'available' | 'soon' | 'default' = 'default';
+
+            if (
+              availability.includes('très disponible') ||
+              availability.includes('tres disponible')
+            ) {
+              availabilityTone = 'available';
+              availabilityLabel = 'Disponible rapidement';
+            } else if (availability.includes('disponible rapidement')) {
+              availabilityTone = 'available';
+            } else if (availability.includes('sur rendez-vous')) {
+              availabilityTone = 'soon';
+            }
+
+            return (
+              <article
+                class={`carousel-slide ${
+                  index === 0 ? 'is-active' : ''
+                }`}
+                data-slide
+              >
+                <div class="carousel-avatar">
+                  <img
+                    src={midwife.photo_url}
+                    alt={`Photo de ${midwife.nom}`}
+                    loading="lazy"
+                    onerror="this.onerror=null; this.style.visibility='hidden';"
+                  />
+                </div>
+                <div class="carousel-name">{midwife.nom}</div>
+                <div class="carousel-location">
+                  {midwife.ville}
+                  {midwife.npa && <> · {midwife.npa}</>}
+                </div>
+                <span
+                  class:list={[
+                    'badge',
+                    'badge-availability',
+                    'carousel-badge',
+                    `badge-${availabilityTone}`,
+                  ]}
+                >
+                  {availabilityLabel}
+                </span>
+              </article>
+            );
+          })}
+        </div>
+        <div class="carousel-dots">
+          {carouselMidwives.map((_, index) => (
+            <span
+              class={`carousel-dot ${
+                index === 0 ? 'is-active' : ''
+              }`}
+              data-dot
+            ></span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="resources-section">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <div class="section-kicker">Ressources</div>
+        <h2 class="section-title">
+          Un accompagnement à chaque étape de votre grossesse
+        </h2>
+        <div class="resources-header-links">
+          <a href="/questionnaire" class="panel-link">
+            Recevoir des recommandations personnalisées
+            <span class="panel-link-arrow">→</span>
+          </a>
+          <a href="/questionnaire" class="panel-link">
+            Parler à une sage-femme près de chez vous
+            <span class="panel-link-arrow">→</span>
+          </a>
+        </div>
+      </header>
+      <div class="resources-grid">
+        <article class="resource-card fade-in-up">
+          <h3 class="resource-title">Choisir le bon moment</h3>
+          <p class="resource-body">
+            Quand commencer à chercher une sage-femme et comment anticiper la
+            disponibilité.
+          </p>
+        </article>
+        <article class="resource-card fade-in-up">
+          <h3 class="resource-title">Préparer sa naissance</h3>
+          <p class="resource-body">
+            Les éléments clés d'un projet de naissance clair et respecté.
+          </p>
+        </article>
+        <article class="resource-card fade-in-up">
+          <h3 class="resource-title">
+            Comprendre les remboursements LaMal
+          </h3>
+          <p class="resource-body">
+            Quelles prestations sont prises en charge et comment s'y retrouver.
+          </p>
+        </article>
+        <article class="resource-card fade-in-up">
+          <h3 class="resource-title">Calculer les coûts</h3>
+          <p class="resource-body">
+            Honoraires, franchises, complémentaires&nbsp;: faire le point avant
+            de s'engager.
+          </p>
+        </article>
+        <article class="resource-card fade-in-up">
+          <h3 class="resource-title">Suivi postnatal</h3>
+          <p class="resource-body">
+            Ce que couvre le suivi à domicile les premières semaines après la
+            naissance.
+          </p>
+        </article>
+        <article class="resource-card fade-in-up">
+          <h3 class="resource-title">Accouchement à domicile</h3>
+          <p class="resource-body">
+            Pour qui, avec quelles conditions et quelles sages-femmes
+            spécialisées.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <div class="section-kicker">Top villes</div>
+        <h2 class="section-title">Top villes pour trouver une sage-femme</h2>
+        <p class="section-summary">
+          Le score affiché correspond à la disponibilité moyenne des
+          sages-femmes dans chaque ville.
+        </p>
+      </header>
+      <div class="banner-actions fade-in-up" style="margin-bottom: 1.8rem;">
+        <a href="/questionnaire" class="btn btn-outline">
+          Trouver une sage-femme près de chez moi
+        </a>
+      </div>
+      <div class="top-cities-grid">
+        {topCities.map((city) => {
+          const score =
+            7 +
+            2 *
+              Math.min(
+                1,
+                Math.max(0, city.count / Math.max(1, midwives.length / 10))
+              );
+          const scoreLabel = score.toFixed(1);
+          return (
+            <div class="city-card fade-in-up">
+              <div class="city-badge">{scoreLabel}</div>
+              <div class="city-meta">
+                <a href="/questionnaire" class="city-name">
+                  {city.name}
+                </a>
+                <span class="city-count">
+                  {city.count} sages-femmes
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sages-femmes">
+    <div class="container">
+      <header class="section-header fade-in-up">
+        <div class="section-kicker">Annuaire</div>
+        <h2 class="section-title">Sages-femmes en Suisse romande</h2>
+        <p class="section-summary">
+          Quelques profils parmi les {midwives.length} sages-femmes
+          référencées. Cliquez sur un profil pour voir le détail ou utilisez
+          le bouton « Contacter » pour envoyer une demande.
+        </p>
+      </header>
+      <div class="cards-grid">
+        {featuredMidwives.map((midwife) => (
+          <MidwifeCard midwife={midwife} />
+        ))}
+      </div>
+      <div style="margin-top: 1.8rem;" class="fade-in-up">
+        <a href="/sages-femmes" class="btn btn-outline">
+          Voir les 238 sages-femmes
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal" data-contact-modal>
+    <div class="modal-overlay" data-modal-overlay></div>
+    <div class="modal-panel">
+      <button class="modal-close" type="button" data-modal-close>
+        ×
+      </button>
+      <h2 class="modal-title">Contacter la sage-femme</h2>
+      <p class="modal-subtitle">
+        Laissez vos coordonnées, nous transmettons votre message à{' '}
+        <strong data-modal-name>la sage-femme</strong>.
+      </p>
+      <form
+        action="https://formspree.io/f/xlgwanan"
+        method="POST"
+        data-formspree-form
+      >
+        <input type="hidden" name="_subject" value="Nouveau contact Pages - Sage-femme" />
+        <input
+          type="hidden"
+          name="sage_femme"
+          value=""
+          data-modal-midwife-input
+        />
+        <div class="field-group">
+          <label class="field-label" for="prenom">
+            Prénom
+          </label>
+          <input
+            class="field-input"
+            id="prenom"
+            name="prenom"
+            autocomplete="given-name"
+            required
+          />
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="email">
+            Email
+          </label>
+          <input
+            class="field-input"
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+          />
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="terme">
+            Terme de grossesse (approx.)
+          </label>
+          <input
+            class="field-input"
+            id="terme"
+            name="terme"
+            placeholder="Par ex. 28 semaines, DPA 12.10.2026…"
+          />
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="message">
+            Message
+          </label>
+          <textarea
+            class="field-textarea"
+            id="message"
+            name="message"
+            placeholder="Expliquez brièvement votre situation et vos besoins."
+          ></textarea>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            data-submit-button
+          >
+            Envoyer
+          </button>
+        </div>
+        <div class="modal-success" data-success-message>
+          Merci ! Vous recevrez vos recommandations sous 24h.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    const carousel = document.querySelector('[data-midwife-carousel]');
+    if (carousel) {
+      const slides = Array.from(
+        carousel.querySelectorAll('[data-slide]')
+      );
+      const dots = Array.from(carousel.querySelectorAll('[data-dot]'));
+      if (slides.length > 0) {
+        let index = 0;
+        const lastIndex = slides.length - 1;
+
+        function showSlide(nextIndex) {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle('is-active', i === nextIndex);
+          });
+          dots.forEach((dot, i) => {
+            dot.classList.toggle('is-active', i === nextIndex);
+          });
+          index = nextIndex;
+        }
+
+        showSlide(0);
+
+        let timer = window.setInterval(() => {
+          if (index >= lastIndex) {
+            window.clearInterval(timer);
+            return;
+          }
+          const next = Math.min(lastIndex, index + 1);
+          showSlide(next);
+        }, 3000);
+      }
+    }
+  </script>
+</PagesLayout>
+
